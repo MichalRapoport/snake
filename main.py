@@ -1,23 +1,18 @@
 import pygame
 import time
 from fruit import fruit_image, fruit_size, getPosition
-from constants import SNAKE_COLOUR, SNAKE_START_POSITION, KEY_TO_DIRECTION,WINDOW_SIZE, BACKGROUND_COLOUR
+from constants import CAPTION, SNAKE_COLOUR, SNAKE_START_POSITION, KEY_TO_DIRECTION,WINDOW_SIZE, BACKGROUND_COLOUR
 
 pygame.init()
-
 screen = pygame.display.set_mode((WINDOW_SIZE, WINDOW_SIZE))
-pygame.display.set_caption("Snake game")
+pygame.display.set_caption(CAPTION)
 
 resized_fruit_image = pygame.transform.scale(fruit_image, fruit_size )
-fruit_init_position = getPosition()
-
-#######
+fruits = [getPosition()]
+last_fruit_time = time.time()
 snake_body = pygame.Rect(100,100, 30, 30)
 
 run_game = True
-fruits = [getPosition()]
-
-last_fruit_time = time.time()
 while run_game:
     current_time = time.time()
 
