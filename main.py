@@ -9,8 +9,9 @@ pygame.display.set_caption(CAPTION)
 
 resized_fruit_image = pygame.transform.scale(fruit_image, fruit_size )
 fruits = [getPosition()]
+ate_fruit = False
 last_fruit_time = time.time()
-snake_body = pygame.Rect(100,100, 30, 30)
+snake_body = [pygame.Rect(100, 100, 30, 30)]  
 
 run_game = True
 while run_game:
@@ -21,12 +22,15 @@ while run_game:
         last_fruit_time = current_time
 
     screen.fill(BACKGROUND_COLOUR)  
-    pygame.draw.rect(screen, SNAKE_COLOUR, snake_body)
+    for segment in snake_body:
+      pygame.draw.rect(screen, SNAKE_COLOUR, segment)
 
+    
     for fruit_position in fruits[:]:
         fruit_rect = pygame.Rect(fruit_position, fruit_size)
-        if snake_body.colliderect(fruit_rect):
+        if snake_body[0].colliderect(fruit_rect):
             fruits.remove(fruit_position)
+            ate_fruit = True
         else:
             screen.blit(resized_fruit_image, fruit_position)
     pygame.display.flip()
@@ -35,8 +39,13 @@ while run_game:
         if event.type == pygame.KEYDOWN:
           if event.key in KEY_TO_DIRECTION:
               change_to, move_increment = KEY_TO_DIRECTION[event.key]
-              snake_body = snake_body.move(move_increment)
-              print("change_to -" , change_to)
+              new_head = snake_body[0].move(move_increment)
+              snake_body.insert(0, new_head)
+
+              if not ate_fruit:
+                snake_body.pop() 
+
+              ate_fruit = False
 
         if event.type == pygame.QUIT:
             run_game = False
