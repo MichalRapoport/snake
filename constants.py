@@ -10,8 +10,6 @@ MAX_FRUIT_POSITION = WINDOW_SIZE - FRUIT_WIDTH
 FRUIT_CREATION_TIME = 5 # every 5 seconds, a new fruit will be generated
 
 
-
-SNAKE_START_POSITION = (100, 100)
 STEP_SIZE = 30
 SNAKE_COLOUR = (10, 128, 1) 
 SNAKE_SPEED = 0.5 # every 0.5 seconds, move the snake
