@@ -4,6 +4,11 @@ WINDOW_SIZE = 700
 BACKGROUND_COLOUR = (255, 255, 255)
 CAPTION = "Snake game"
 
+pygame.font.init()
+FONT = pygame.font.Font("assets/game_font.ttf", 80)
+GAME_OVER_MESSAGE = FONT.render("Game Over", True, (255, 0, 0))
+GAME_OVER_BOX = GAME_OVER_MESSAGE.get_rect(center=(WINDOW_SIZE // 2, WINDOW_SIZE // 2))
+
 FRUIT_WIDTH = 30
 MIN_FRUIT_POSITION = FRUIT_WIDTH
 MAX_FRUIT_POSITION = WINDOW_SIZE - FRUIT_WIDTH

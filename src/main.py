@@ -9,6 +9,8 @@ from constants import (
     KEY_TO_DIRECTION,
     WINDOW_SIZE,
     BACKGROUND_COLOUR,
+    GAME_OVER_MESSAGE,
+    GAME_OVER_BOX,
 )
 
 
@@ -22,6 +24,14 @@ def init_game():
 def draw_snake(screen, snake_body):
     for segment in snake_body:
         pygame.draw.rect(screen, SNAKE_COLOUR, segment)
+
+
+def end_game():
+    screen.fill(BACKGROUND_COLOUR)
+    screen.blit(GAME_OVER_MESSAGE, GAME_OVER_BOX)
+    pygame.display.flip()
+    pygame.time.wait(3000)
+    return False
 
 
 fruits = [getPosition()]
@@ -42,6 +52,15 @@ while run_game:
 
     if current_time - last_move_time >= SNAKE_SPEED:
         new_head = snake_body[0].move(current_direction)
+
+        if (
+            new_head.left < 0
+            or new_head.right > WINDOW_SIZE
+            or new_head.top < 0
+            or new_head.bottom > WINDOW_SIZE
+        ):
+            run_game = end_game()
+
         snake_body.insert(0, new_head)
 
         if not ate_fruit:
