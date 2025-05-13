@@ -5,15 +5,15 @@ BACKGROUND_COLOUR = (255, 255, 255)
 CAPTION = "Snake game"
 
 pygame.font.init()
-FONT = pygame.font.Font("assets/game_font.ttf", 60)
-GAME_OVER_MESSAGE = FONT.render("Game Over", True, (255, 0, 0))
+GAME_OVER_FONT = pygame.font.Font("assets/game_font.ttf", 60)
+TEXT_COLOUR = (255, 0, 0)
+GAME_OVER_MESSAGE = GAME_OVER_FONT.render("Game Over", True, TEXT_COLOUR)
 GAME_OVER_BOX = GAME_OVER_MESSAGE.get_rect(center=(WINDOW_SIZE // 2, WINDOW_SIZE // 2))
 
 FRUIT_WIDTH = 30
 MIN_FRUIT_POSITION = FRUIT_WIDTH
 MAX_FRUIT_POSITION = WINDOW_SIZE - FRUIT_WIDTH
 FRUIT_CREATION_TIME = 5  # every 5 seconds, a new fruit will be generated
-
 
 STEP_SIZE = 30
 SNAKE_COLOUR = (10, 128, 1)

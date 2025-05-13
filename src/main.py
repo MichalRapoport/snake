@@ -12,12 +12,17 @@ def init_game():
     return screen
 
 
-def end_game(screen):
+def end_game(screen, score):
     screen.fill(BACKGROUND_COLOUR)
+    score_font = pygame.font.Font("assets/game_font.ttf", 30)
+    score_message = score_font.render(f"Score: {score}", True, TEXT_COLOUR)
+    screen.blit(
+        score_message,
+        (WINDOW_SIZE // 2 - score_message.get_width() // 2, WINDOW_SIZE // 2 + 50),
+    )
     screen.blit(GAME_OVER_MESSAGE, GAME_OVER_BOX)
     pygame.display.flip()
     pygame.time.wait(3000)
-    return False
 
 
 def draw_fruits(screen, fruits):
@@ -59,7 +64,8 @@ def run_game():
         if time.time() - last_move_time >= SNAKE_SPEED:
             is_alive = snake.move()
             if not is_alive:
-                running = end_game(screen)
+                end_game(screen, snake.score)
+                running = False
             last_move_time = time.time()
 
         screen.fill(BACKGROUND_COLOUR)

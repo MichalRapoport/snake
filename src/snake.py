@@ -5,8 +5,9 @@ from constants import SNAKE_COLOUR, STEP_SIZE, WINDOW_SIZE
 class Snake:
     def __init__(self, initial_position):
         self.body = [pygame.Rect(initial_position, (STEP_SIZE, STEP_SIZE))]
-        self.direction = (0, 0)
+        self.direction = (0, -STEP_SIZE)
         self.ate_fruit = False
+        self.score = 0
 
     def move(self):
         new_head = self.body[0].move(self.direction)
@@ -16,6 +17,8 @@ class Snake:
             or new_head.top < 0
             or new_head.bottom > WINDOW_SIZE
         ):
+            return False
+        if new_head in self.body:
             return False
 
         self.body.insert(0, new_head)
@@ -31,6 +34,10 @@ class Snake:
 
     def eat(self):
         self.ate_fruit = True
+        self.score += 1
 
     def head(self):
         return self.body[0]
+
+    def score(self):
+        return self.score
