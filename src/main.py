@@ -39,15 +39,17 @@ def check_collisions(snake, fruits):
             fruits.remove(fruit)
 
 
-def display_info_bar(start_time, score, screen):
+def display_info_bar(start_time, snake, screen):
     elapsed_time = int(time.time() - start_time)
     pygame.draw.rect(
         screen, pygame.Color("black"), (0, 0, WINDOW_SIZE, INFO_BAR_HEIGHT)
     )
     font = pygame.font.Font("assets/game_font.ttf", 24)
     time_text = font.render(f"Time: {elapsed_time}s", True, TEXT_COLOUR)
-    score_text = font.render(f"Score: {score}", True, TEXT_COLOUR)
+    score_text = font.render(f"Score: {snake.score}", True, TEXT_COLOUR)
 
+    speed_text = font.render(f"Speed: {snake.speed:.2f}s", True, TEXT_COLOUR)
+    screen.blit(speed_text, (WINDOW_SIZE // 2 - speed_text.get_width() // 2, 10))
     screen.blit(time_text, (10, 10))
     screen.blit(score_text, (WINDOW_SIZE - score_text.get_width() - 10, 10))
 
@@ -65,9 +67,16 @@ def run_game():
 
     while running:
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key in KEY_TO_DIRECTION:
-                change_to, move_dir = KEY_TO_DIRECTION[event.key]
-                snake.direction = move_dir
+            if event.type == pygame.KEYDOWN:
+                if event.key in KEY_TO_DIRECTION:
+                    change_to, move_dir = KEY_TO_DIRECTION[event.key]
+                    snake.direction = move_dir
+
+                elif event.key == pygame.K_PLUS or event.key == pygame.K_KP_PLUS:
+                    snake.faster_speed()
+
+                elif event.key == pygame.K_MINUS or event.key == pygame.K_KP_MINUS:
+                    snake.slower_speed()
 
             if event.type == pygame.QUIT:
                 running = False
@@ -76,7 +85,7 @@ def run_game():
             fruits.append(generate_fruit_position())
             last_fruit_time = time.time()
 
-        if time.time() - last_move_time >= SNAKE_SPEED:
+        if time.time() - last_move_time >= snake.speed:
             is_alive = snake.move()
             if not is_alive:
                 end_game(screen, snake.score)
@@ -85,7 +94,7 @@ def run_game():
 
         screen.fill(BACKGROUND_COLOUR)
         snake.draw(screen)
-        display_info_bar(start_time, snake.score, screen)
+        display_info_bar(start_time, snake, screen)
 
         for fruit_position in fruits[:]:
             head = snake.head()

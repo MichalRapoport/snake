@@ -1,5 +1,5 @@
 import pygame
-from constants import SNAKE_COLOUR, STEP_SIZE, WINDOW_SIZE
+from constants import *
 
 
 class Snake:
@@ -8,6 +8,7 @@ class Snake:
         self.direction = (0, -STEP_SIZE)
         self.ate_fruit = False
         self.score = 0
+        self.speed = SNAKE_SPEED
 
     def move(self):
         new_head = self.body[0].move(self.direction)
@@ -15,7 +16,7 @@ class Snake:
             new_head.left < 0
             or new_head.right > WINDOW_SIZE
             or new_head.top < 0
-            or new_head.bottom > WINDOW_SIZE
+            or new_head.bottom > WINDOW_SIZE + INFO_BAR_HEIGHT
         ):
             return False
         if new_head in self.body:
@@ -39,5 +40,8 @@ class Snake:
     def head(self):
         return self.body[0]
 
-    def score(self):
-        return self.score
+    def faster_speed(self):
+        self.speed = max(0.1, self.speed - 0.1)
+
+    def slower_speed(self):
+        self.speed += 0.1
