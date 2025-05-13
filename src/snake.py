@@ -36,8 +36,9 @@ class Snake:
         return True
 
     def draw(self, screen):
-        for segment in self.body:
-            pygame.draw.rect(screen, SNAKE_COLOUR, segment)
+        for i, segment in enumerate(self.body):
+            colour = SNAKE_HEAD_COLOUR if i == 0 else SNAKE_COLOUR
+            pygame.draw.rect(screen, colour, segment)
 
     def eat(self):
         self.ate_fruit = True

@@ -18,6 +18,7 @@ FRUIT_CREATION_TIME = 5  # every 5 seconds, a new fruit will be generated
 
 STEP_SIZE = 30
 SNAKE_COLOUR = (10, 128, 1)
+SNAKE_HEAD_COLOUR = (126, 252, 116)
 SNAKE_SPEED = 0.5  # every 0.5 seconds, move the snake
 
 DIRECTIONS = {
