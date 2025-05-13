@@ -3,6 +3,7 @@ import pygame
 WINDOW_SIZE = 700
 BACKGROUND_COLOUR = (255, 255, 255)
 CAPTION = "Snake game"
+INFO_BAR_HEIGHT = 40
 
 pygame.font.init()
 GAME_OVER_FONT = pygame.font.Font("assets/game_font.ttf", 60)

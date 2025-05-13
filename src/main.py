@@ -7,7 +7,7 @@ from constants import *
 
 def init_game():
     pygame.init()
-    screen = pygame.display.set_mode((WINDOW_SIZE, WINDOW_SIZE))
+    screen = pygame.display.set_mode((WINDOW_SIZE, WINDOW_SIZE + INFO_BAR_HEIGHT))
     pygame.display.set_caption(CAPTION)
     return screen
 
@@ -39,6 +39,19 @@ def check_collisions(snake, fruits):
             fruits.remove(fruit)
 
 
+def display_info_bar(start_time, score, screen):
+    elapsed_time = int(time.time() - start_time)
+    pygame.draw.rect(
+        screen, pygame.Color("black"), (0, 0, WINDOW_SIZE, INFO_BAR_HEIGHT)
+    )
+    font = pygame.font.Font("assets/game_font.ttf", 24)
+    time_text = font.render(f"Time: {elapsed_time}s", True, TEXT_COLOUR)
+    score_text = font.render(f"Score: {score}", True, TEXT_COLOUR)
+
+    screen.blit(time_text, (10, 10))
+    screen.blit(score_text, (WINDOW_SIZE - score_text.get_width() - 10, 10))
+
+
 def run_game():
     screen = init_game()
     snake = Snake((500, 500))
@@ -46,6 +59,8 @@ def run_game():
 
     last_fruit_time = time.time()
     last_move_time = time.time()
+    start_time = time.time()
+
     running = True
 
     while running:
@@ -70,6 +85,7 @@ def run_game():
 
         screen.fill(BACKGROUND_COLOUR)
         snake.draw(screen)
+        display_info_bar(start_time, snake.score, screen)
 
         for fruit_position in fruits[:]:
             head = snake.head()
