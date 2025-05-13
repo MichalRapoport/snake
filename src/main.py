@@ -1,17 +1,8 @@
 import pygame
 import time
-from fruit import resized_fruit_image, fruit_size, getPosition
-from constants import (
-    SNAKE_SPEED,
-    FRUIT_CREATION_TIME,
-    CAPTION,
-    SNAKE_COLOUR,
-    KEY_TO_DIRECTION,
-    WINDOW_SIZE,
-    BACKGROUND_COLOUR,
-    GAME_OVER_MESSAGE,
-    GAME_OVER_BOX,
-)
+from snake import Snake
+from fruit import resized_fruit_image, fruit_size, generate_fruit_position
+from constants import *
 
 
 def init_game():
@@ -21,12 +12,7 @@ def init_game():
     return screen
 
 
-def draw_snake(screen, snake_body):
-    for segment in snake_body:
-        pygame.draw.rect(screen, SNAKE_COLOUR, segment)
-
-
-def end_game():
+def end_game(screen):
     screen.fill(BACKGROUND_COLOUR)
     screen.blit(GAME_OVER_MESSAGE, GAME_OVER_BOX)
     pygame.display.flip()
@@ -34,62 +20,65 @@ def end_game():
     return False
 
 
-fruits = [getPosition()]
-ate_fruit = False
-last_fruit_time = time.time()
-snake_body = [pygame.Rect(500, 500, 30, 30)]
-current_direction = (0, 0)
-last_move_time = time.time()
-screen = init_game()
+def draw_fruits(screen, fruits):
+    for fruit in fruits:
+        screen.blit(resized_fruit_image, fruit)
 
-run_game = True
-while run_game:
-    current_time = time.time()
 
-    if current_time - last_fruit_time >= FRUIT_CREATION_TIME:
-        fruits.append(getPosition())
-        last_fruit_time = current_time
+def check_collisions(snake, fruits):
+    head = snake.head()
+    for fruit in fruits[:]:
+        fruit_rect = pygame.Rect(fruit, fruit_size)
+        if head.colliderect(fruit_rect):
+            snake.eat()
+            fruits.remove(fruit)
 
-    if current_time - last_move_time >= SNAKE_SPEED:
-        new_head = snake_body[0].move(current_direction)
 
-        if (
-            new_head.left < 0
-            or new_head.right > WINDOW_SIZE
-            or new_head.top < 0
-            or new_head.bottom > WINDOW_SIZE
-        ):
-            run_game = end_game()
+def run_game():
+    screen = init_game()
+    snake = Snake((500, 500))
+    fruits = [generate_fruit_position()]
 
-        snake_body.insert(0, new_head)
+    last_fruit_time = time.time()
+    last_move_time = time.time()
+    running = True
 
-        if not ate_fruit:
-            snake_body.pop()
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key in KEY_TO_DIRECTION:
+                change_to, move_dir = KEY_TO_DIRECTION[event.key]
+                snake.direction = move_dir
 
-        ate_fruit = False
-        last_move_time = current_time
+            if event.type == pygame.QUIT:
+                running = False
 
-    screen.fill(BACKGROUND_COLOUR)
+        if time.time() - last_fruit_time >= FRUIT_CREATION_TIME:
+            fruits.append(generate_fruit_position())
+            last_fruit_time = time.time()
 
-    draw_snake(screen, snake_body)
+        if time.time() - last_move_time >= SNAKE_SPEED:
+            is_alive = snake.move()
+            if not is_alive:
+                running = end_game(screen)
+            last_move_time = time.time()
 
-    for fruit_position in fruits[:]:
-        fruit_rect = pygame.Rect(fruit_position, fruit_size)
-        if snake_body[0].colliderect(fruit_rect):
-            fruits.remove(fruit_position)
-            ate_fruit = True
-        else:
-            screen.blit(resized_fruit_image, fruit_position)
+        screen.fill(BACKGROUND_COLOUR)
 
-    pygame.display.flip()
+        snake.draw(screen)
 
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key in KEY_TO_DIRECTION:
-                change_to, move_increment = KEY_TO_DIRECTION[event.key]
-                current_direction = move_increment
+        for fruit_position in fruits[:]:
+            head = snake.head()
+            fruit_rect = pygame.Rect(fruit_position, fruit_size)
+            if head.colliderect(fruit_rect):
+                fruits.remove(fruit_position)
+                snake.eat()
+            else:
+                screen.blit(resized_fruit_image, fruit_position)
 
-        if event.type == pygame.QUIT:
-            run_game = False
+        pygame.display.flip()
+
 
 pygame.quit()
+
+if __name__ == "__main__":
+    run_game()

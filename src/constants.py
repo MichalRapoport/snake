@@ -5,7 +5,7 @@ BACKGROUND_COLOUR = (255, 255, 255)
 CAPTION = "Snake game"
 
 pygame.font.init()
-FONT = pygame.font.Font("assets/game_font.ttf", 80)
+FONT = pygame.font.Font("assets/game_font.ttf", 60)
 GAME_OVER_MESSAGE = FONT.render("Game Over", True, (255, 0, 0))
 GAME_OVER_BOX = GAME_OVER_MESSAGE.get_rect(center=(WINDOW_SIZE // 2, WINDOW_SIZE // 2))
 
