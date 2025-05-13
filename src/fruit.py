@@ -2,7 +2,7 @@ import random
 import pygame
 from constants import FRUIT_WIDTH, MAX_FRUIT_POSITION, MIN_FRUIT_POSITION
 
-fruit_image = pygame.image.load("fruit.jpg")
+fruit_image = pygame.image.load("assets/fruit.jpg")
 
 
 fruit_size = (FRUIT_WIDTH, FRUIT_WIDTH)

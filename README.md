@@ -14,5 +14,5 @@ Eat apples to grow longer and try not to run into the edges.
 🚀 **Getting Started**     
 git clone https://github.com/MichalRapoport/snake.git      
 cd snake            
-python ./main.py      
+python ./src/main.py      
 <sub> 🐍 Make sure you have Python installed </sub>
