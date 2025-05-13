@@ -24,5 +24,6 @@ Use this to challenge yourself or take it easy!
 ```bash    
 git clone https://github.com/MichalRapoport/snake.git      
 cd snake            
-python ./src/main.py      
+python ./src/main.py
+```        
 <sub> 🐍 Make sure you have Python installed </sub>
