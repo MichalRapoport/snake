@@ -1,7 +1,7 @@
 import pygame
 import time
 from snake import Snake
-from fruit import resized_fruit_image, fruit_size, generate_fruit_position
+from fruit import *
 from constants import *
 
 
@@ -63,7 +63,6 @@ def run_game():
             last_move_time = time.time()
 
         screen.fill(BACKGROUND_COLOUR)
-
         snake.draw(screen)
 
         for fruit_position in fruits[:]:
