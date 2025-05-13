@@ -56,7 +56,7 @@ def display_info_bar(start_time, snake, screen):
 
 def run_game():
     screen = init_game()
-    snake = Snake((500, 500))
+    snake = Snake((WINDOW_SIZE * 2 // 3, WINDOW_SIZE * 2 // 3))
     fruits = [generate_fruit_position()]
 
     last_fruit_time = time.time()
@@ -68,10 +68,11 @@ def run_game():
     while running:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
+                # if user presses a directional key, switch snake's direction
                 if event.key in KEY_TO_DIRECTION:
                     change_to, move_dir = KEY_TO_DIRECTION[event.key]
                     snake.direction = move_dir
-
+                # if user presses + or -, change snake's speed accordingly
                 elif event.key == pygame.K_PLUS or event.key == pygame.K_KP_PLUS:
                     snake.faster_speed()
 
@@ -81,11 +82,15 @@ def run_game():
             if event.type == pygame.QUIT:
                 running = False
 
-        if time.time() - last_fruit_time >= FRUIT_CREATION_TIME:
+        if (
+            time.time() - last_fruit_time >= FRUIT_CREATION_TIME
+        ):  # generate a fruit every FRUIT_CREATION_TIME
             fruits.append(generate_fruit_position())
             last_fruit_time = time.time()
 
-        if time.time() - last_move_time >= snake.speed:
+        if (
+            time.time() - last_move_time >= snake.speed
+        ):  # move snake's location every snake.speed seconds
             is_alive = snake.move()
             if not is_alive:
                 end_game(screen, snake.score)
@@ -96,7 +101,7 @@ def run_game():
         snake.draw(screen)
         display_info_bar(start_time, snake, screen)
 
-        for fruit_position in fruits[:]:
+        for fruit_position in fruits[:]:  # check if the snake ate a fruit
             head = snake.head()
             fruit_rect = pygame.Rect(fruit_position, fruit_size)
             if head.colliderect(fruit_rect):
@@ -105,7 +110,7 @@ def run_game():
             else:
                 screen.blit(resized_fruit_image, fruit_position)
 
-        pygame.display.flip()
+        pygame.display.flip()  # update entire screen changes
 
 
 pygame.quit()

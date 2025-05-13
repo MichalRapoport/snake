@@ -26,4 +26,4 @@ git clone https://github.com/MichalRapoport/snake.git
 cd snake            
 python ./src/main.py
 ```        
-<sub> 🐍 Make sure you have Python installed </sub>
+<sub> 🐍 Make sure you have Python and pygame installed </sub>
